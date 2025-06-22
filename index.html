@@ -96,7 +96,7 @@
   </div>
 
   <footer>
-    © 2025 Item Manager | Developed for Internship Assignment
+    © 2025 Item Manager | Internship Project
   </footer>
 
   <script>
@@ -114,40 +114,40 @@
         name: "Cotton Shirt",
         type: "Shirt",
         desc: "Formal cotton shirt for office wear.",
-        cover: "https://images.app.goo.gl/PrDoHNyTzBFYvief8",
+        cover: "https://www.google.com/url?sa=i&url=https://www.example.com/cotton-shirt-cover.jpg",
         images: [
-          "https://images.app.goo.gl/fLeX7ypCiVu7cJbq8",
-          "https://images.app.goo.gl/jHueXWNH8QcwFNoL8"
+          "https://www.google.com/url?sa=i&url=https://www.example.com/cotton-shirt-1.jpg",
+          "https://www.google.com/url?sa=i&url=https://www.example.com/cotton-shirt-2.jpg"
         ]
       },
       {
         name: "Blue Jeans",
         type: "Pant",
         desc: "Comfortable stretch-fit denim pants.",
-        cover: "https://images.app.goo.gl/JmJwJTiCowE15isq8",
+        cover: "https://www.google.com/url?sa=i&url=https://www.example.com/blue-jeans-cover.jpg",
         images: [
-          "https://images.app.goo.gl/GjdF7j6G3C8nwrzY6",
-          "https://images.app.goo.gl/EbyVDNMtAAB7W1c77"
+          "https://www.google.com/url?sa=i&url=https://www.example.com/blue-jeans-1.jpg",
+          "https://www.google.com/url?sa=i&url=https://www.example.com/blue-jeans-2.jpg"
         ]
       },
       {
         name: "Running Shoes",
         type: "Shoes",
         desc: "Breathable and lightweight running shoes.",
-        cover: "https://images.app.goo.gl/QDGuHuYknF63kZFm9",
+        cover: "https://www.google.com/url?sa=i&url=https://www.example.com/running-shoes-cover.jpg",
         images: [
-          "https://images.app.goo.gl/cFX7GT6tKiV5iqru6",
-          "https://images.app.goo.gl/4qe75e2W3uGtxuvn8"
+          "https://www.google.com/url?sa=i&url=https://www.example.com/running-shoes-1.jpg",
+          "https://www.google.com/url?sa=i&url=https://www.example.com/running-shoes-2.jpg"
         ]
       },
       {
         name: "Cricket Bat",
         type: "Sports Gear",
         desc: "Professional cricket bat made from English willow.",
-        cover: "https://images.app.goo.gl/MnfZRaRfarHW9MG48",
+        cover: "https://www.google.com/url?sa=i&url=https://www.example.com/cricket-bat-cover.jpg",
         images: [
-          "https://www.google.com/url?sa=i&url=https%3A%2F%2Fwww.amazon.in%2FPMG-Wooden-Cricket-Size-6-Weight%2Fdp%2FB0BJ77H7SG&psig=AOvVaw3WViQFOOfThjkETeDwWZm_&ust=1750701655591000&source=images&cd=vfe&opi=89978449&ved=0CBQQjRxqFwoTCNjCn4XOhY4DFQAAAAAdAAAAABAK",
-          "https://images.app.goo.gl/42YmeKj1xWN4mjLJ9"
+          "https://www.google.com/url?sa=i&url=https://www.amazon.in/PMG-Wooden-Cricket-Size-6-Weight/dp/B0BJ77H7SG",
+          "https://www.google.com/url?sa=i&url=https://www.example.com/cricket-bat-2.jpg"
         ]
       }
     ];
@@ -165,7 +165,8 @@
         type: document.getElementById("itemType").value,
         desc: document.getElementById("itemDesc").value,
         cover: document.getElementById("coverImage").value,
-        images: document.getElementById("additionalImages").value.split(",").map(i => i.trim()).filter(Boolean)
+        images: document.getElementById("additionalImages").value.split(",")
+          .map(i => i.trim()).filter(Boolean)
       };
       items.push(item);
       form.reset();
@@ -176,7 +177,7 @@
 
     function loadItems() {
       itemList.innerHTML = "";
-      items.forEach((item) => {
+      items.forEach(item => {
         const div = document.createElement("div");
         div.className = "card";
         div.innerHTML = `<img src="${item.cover}" alt="Cover"><h4>${item.name}</h4>`;
@@ -189,7 +190,8 @@
       modalTitle.textContent = item.name;
       modalDesc.textContent = item.desc;
       modalType.textContent = item.type;
-      modalImages.innerHTML = [item.cover, ...item.images].map(img => `<img src="${img}" />`).join('');
+      modalImages.innerHTML = [item.cover, ...item.images]
+        .map(img => `<img src="${img}" />`).join('');
       modal.style.display = "flex";
     }
 

@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Item Manager</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      background-color: #f4f4f4;
+    }
+
+    nav {
+      background: #2c3e50;
+      padding: 15px;
+      display: flex;
+      gap: 20px;
+    }
+
+    nav a {
+      color: white;
+      text-decoration: none;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    .container {
+      padding: 20px;
+    }
+
+    input, select, textarea {
+      width: 100%;
+      padding: 10px;
+      margin-bottom: 12px;
+      border-radius: 4px;
+      border: 1px solid #ccc;
+    }
+
+    button {
+      padding: 10px 16px;
+      background-color: #007bff;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+
+    .grid {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 20px;
+    }
+
+    .card {
+      width: 200px;
+      background: white;
+      border-radius: 8px;
+      overflow: hidden;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+      cursor: pointer;
+    }
+
+    .card img {
+      width: 100%;
+      height: 140px;
+      object-fit: cover;
+    }
+
+    .card h4 {
+      margin: 10px;
+    }
+
+    .success {
+      color: green;
+      margin-top: 10px;
+    }
+
+    .modal {
+      display: none;
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0,0,0,0.7);
+      justify-content: center;
+      align-items: center;
+    }
+
+    .modal-content {
+      background: white;
+      padding: 20px;
+      border-radius: 8px;
+      max-width: 500px;
+      width: 90%;
+      position: relative;
+    }
+
+    .carousel img {
+      width: 100%;
+      height: 200px;
+      object-fit: cover;
+      margin-bottom: 10px;
+      border-radius: 6px;
+    }
+
+    .close {
+      position: absolute;
+      right: 15px;
+      top: 10px;
+      font-size: 18px;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+
+  <nav>
+    <a onclick="showPage('view')">View Items</a>
+    <a onclick="showPage('add')">Add Items</a>
+  </nav>
+
+  <div class="container" id="addPage" style="display:none;">
+    <h2>Add New Item</h2>
+    <form id="itemForm">
+      <input type="text" id="itemName" placeholder="Item Name" required />
+      <select id="itemType" required>
+        <option value="">Select Type</option>
+        <option>Shirt</option>
+        <option>Pant</option>
+        <option>Shoes</option>
+        <option>Sports Gear</option>
+      </select>
+      <textarea id="itemDesc" placeholder="Item Description" required></textarea>
+      <input type="url" id="coverImage" placeholder="Cover Image URL" required />
+      <input type="url" id="additionalImages" placeholder="Additional Images (comma-separated)" />
+      <button type="submit">Add Item</button>
+    </form>
+    <p class="success" id="successMsg"></p>
+  </div>
+
+  <div class="container" id="viewPage">
+    <h2>View Items</h2>
+    <div class="grid" id="itemList"></div>
+  </div>
+
+  <div class="modal" id="itemModal">
+    <div class="modal-content">
+      <span class="close" onclick="closeModal()">✖</span>
+      <h3 id="modalTitle"></h3>
+      <p><b>Type:</b> <span id="modalType"></span></p>
+      <p id="modalDesc"></p>
+      <div class="carousel" id="modalImages"></div>
+      <button onclick="alert('Enquiry sent!')">Enquire</button>
+    </div>
+  </div>
+
+  <script>
+    const form = document.getElementById("itemForm");
+    const itemList = document.getElementById("itemList");
+    const modal = document.getElementById("itemModal");
+    const modalTitle = document.getElementById("modalTitle");
+    const modalDesc = document.getElementById("modalDesc");
+    const modalType = document.getElementById("modalType");
+    const modalImages = document.getElementById("modalImages");
+    const successMsg = document.getElementById("successMsg");
+
+    let items = JSON.parse(localStorage.getItem("items")) || [
+      {
+        name: "Formal Shirt",
+        type: "Shirt",
+        desc: "Premium white formal cotton shirt for office wear.",
+        cover: "https://images.unsplash.com/photo-1581578017425-becf2823d254?auto=format&fit=crop&w=600&q=80",
+        images: [
+          "https://images.unsplash.com/photo-1562158070-622a4c1e74a0?auto=format&fit=crop&w=600&q=80"
+        ]
+      },
+      {
+        name: "Denim Jeans",
+        type: "Pant",
+        desc: "Stylish blue denim jeans with stretch fit.",
+        cover: "https://images.unsplash.com/photo-1598032893065-cd3842a9a1d1?auto=format&fit=crop&w=600&q=80",
+        images: [
+          "https://images.unsplash.com/photo-1620252437848-2b9b6a2639c1?auto=format&fit=crop&w=600&q=80"
+        ]
+      },
+      {
+        name: "Running Shoes",
+        type: "Shoes",
+        desc: "Lightweight breathable running shoes.",
+        cover: "https://images.unsplash.com/photo-1528701800489-20b6c108e937?auto=format&fit=crop&w=600&q=80",
+        images: [
+          "https://images.unsplash.com/photo-1612147598051-1d1be0e12cc0?auto=format&fit=crop&w=600&q=80"
+        ]
+      },
+      {
+        name: "Tennis Racket",
+        type: "Sports Gear",
+        desc: "Carbon fiber tennis racket with excellent grip.",
+        cover: "https://images.unsplash.com/photo-1583623025817-d180b6d60190?auto=format&fit=crop&w=600&q=80",
+        images: [
+          "https://images.unsplash.com/photo-1568254183085-4c21f19c7e59?auto=format&fit=crop&w=600&q=80"
+        ]
+      }
+    ];
+
+    function showPage(page) {
+      document.getElementById("addPage").style.display = page === "add" ? "block" : "none";
+      document.getElementById("viewPage").style.display = page === "view" ? "block" : "none";
+      if (page === "view") loadItems();
+    }
+
+    form.onsubmit = (e) => {
+      e.preventDefault();
+      const item = {
+        name: document.getElementById("itemName").value,
+        type: document.getElementById("itemType").value,
+        desc: document.getElementById("itemDesc").value,
+        cover: document.getElementById("coverImage").value,
+        images: document.getElementById("additionalImages").value.split(",").map(i => i.trim()).filter(Boolean)
+      };
+      items.push(item);
+      localStorage.setItem("items", JSON.stringify(items));
+      form.reset();
+      successMsg.textContent = "Item successfully added";
+      setTimeout(() => successMsg.textContent = "", 3000);
+      showPage("view");
+    };
+
+    function loadItems() {
+      itemList.innerHTML = "";
+      items.forEach((item) => {
+        const div = document.createElement("div");
+        div.className = "card";
+        div.innerHTML = `<img src="${item.cover}" alt="Cover"><h4>${item.name}</h4>`;
+        div.onclick = () => openModal(item);
+        itemList.appendChild(div);
+      });
+    }
+
+    function openModal(item) {
+      modalTitle.textContent = item.name;
+      modalDesc.textContent = item.desc;
+      modalType.textContent = item.type;
+      modalImages.innerHTML = [item.cover, ...item.images].map(img => `<img src="${img}" />`).join('');
+      modal.style.display = "flex";
+    }
+
+    function closeModal() {
+      modal.style.display = "none";
+    }
+
+    showPage("view");
+  </script>
+</body>
+</html>

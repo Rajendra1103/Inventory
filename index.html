@@ -72,8 +72,8 @@
         <option>Sports Gear</option>
       </select>
       <textarea id="itemDesc" placeholder="Item Description" required></textarea>
-      <input type="text" id="coverImage" placeholder="Cover Image Path (e.g. image/myimg.jpg)" required />
-      <input type="text" id="additionalImages" placeholder="Additional Image Paths (comma-separated)" />
+      <input type="text" id="coverImage" placeholder="Cover Image URL" required />
+      <input type="text" id="additionalImages" placeholder="Additional Image URLs (comma-separated)" />
       <button type="submit">Add Item</button>
     </form>
     <p class="success" id="successMsg"></p>
@@ -114,40 +114,40 @@
         name: "Cotton Shirt",
         type: "Shirt",
         desc: "Formal cotton shirt for office wear.",
-        cover: "image/cotton-shirt-cover.jpg",
+        cover: "https://images.app.goo.gl/PrDoHNyTzBFYvief8",
         images: [
-          "image/cotton-shirt-1.jpg",
-          "image/cotton-shirt-2.jpg"
+          "https://images.app.goo.gl/fLeX7ypCiVu7cJbq8",
+          "https://images.app.goo.gl/jHueXWNH8QcwFNoL8"
         ]
       },
       {
         name: "Blue Jeans",
         type: "Pant",
-        desc: "Stretch-fit comfortable denim jeans.",
-        cover: "image/blue-jeans-cover.jpg",
+        desc: "Comfortable stretch-fit denim pants.",
+        cover: "https://images.app.goo.gl/JmJwJTiCowE15isq8",
         images: [
-          "image/blue-jeans-1.jpg",
-          "image/blue-jeans-2.jpg"
+          "https://images.app.goo.gl/GjdF7j6G3C8nwrzY6",
+          "https://images.app.goo.gl/EbyVDNMtAAB7W1c77"
         ]
       },
       {
         name: "Running Shoes",
         type: "Shoes",
-        desc: "Breathable lightweight running shoes.",
-        cover: "image/running-shoes-cover.jpg",
+        desc: "Breathable and lightweight running shoes.",
+        cover: "https://images.app.goo.gl/QDGuHuYknF63kZFm9",
         images: [
-          "image/running-shoes-1.jpg",
-          "image/running-shoes-2.jpg"
+          "https://images.app.goo.gl/cFX7GT6tKiV5iqru6",
+          "https://images.app.goo.gl/4qe75e2W3uGtxuvn8"
         ]
       },
       {
         name: "Cricket Bat",
         type: "Sports Gear",
-        desc: "Professional grade cricket bat.",
-        cover: "batc.jpeg",
+        desc: "Professional cricket bat made from English willow.",
+        cover: "https://images.app.goo.gl/MnfZRaRfarHW9MG48",
         images: [
-         "bat1.jpg",
-          "bat2.jpg"
+          "https://www.google.com/url?sa=i&url=https%3A%2F%2Fwww.amazon.in%2FPMG-Wooden-Cricket-Size-6-Weight%2Fdp%2FB0BJ77H7SG&psig=AOvVaw3WViQFOOfThjkETeDwWZm_&ust=1750701655591000&source=images&cd=vfe&opi=89978449&ved=0CBQQjRxqFwoTCNjCn4XOhY4DFQAAAAAdAAAAABAK",
+          "https://images.app.goo.gl/42YmeKj1xWN4mjLJ9"
         ]
       }
     ];
@@ -200,4 +200,4 @@
     showPage("view");
   </script>
 </body>
-  </html>
+</html>

@@ -2,124 +2,65 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <title>Item Manager</title>
+  <title>Item Manager Website</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <style>
-    body {
-      font-family: Arial, sans-serif;
-      margin: 0;
-      background-color: #f4f4f4;
-    }
-
-    nav {
-      background: #2c3e50;
-      padding: 15px;
-      display: flex;
-      gap: 20px;
-    }
-
-    nav a {
-      color: white;
-      text-decoration: none;
-      font-weight: bold;
-      cursor: pointer;
-    }
-
-    .container {
-      padding: 20px;
-    }
-
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: Arial, sans-serif; background-color: #f4f4f4; }
+    header { background-color: #2c3e50; color: white; padding: 15px 20px; text-align: center; font-size: 24px; font-weight: bold; }
+    nav { background-color: #34495e; display: flex; justify-content: center; gap: 30px; padding: 12px; }
+    nav a { color: white; text-decoration: none; font-weight: bold; cursor: pointer; }
+    nav a:hover { text-decoration: underline; }
+    .container { padding: 25px; }
     input, select, textarea {
-      width: 100%;
-      padding: 10px;
-      margin-bottom: 12px;
-      border-radius: 4px;
-      border: 1px solid #ccc;
+      width: 100%; padding: 10px; margin-bottom: 15px;
+      border-radius: 5px; border: 1px solid #ccc;
     }
-
     button {
-      padding: 10px 16px;
-      background-color: #007bff;
-      color: white;
-      border: none;
-      border-radius: 5px;
-      cursor: pointer;
+      padding: 10px 16px; background-color: #2980b9; color: white;
+      border: none; border-radius: 4px; cursor: pointer;
     }
-
-    .grid {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 20px;
-    }
-
+    .grid { display: flex; flex-wrap: wrap; gap: 20px; }
     .card {
-      width: 200px;
-      background: white;
-      border-radius: 8px;
-      overflow: hidden;
-      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-      cursor: pointer;
+      width: 220px; background: white; border-radius: 8px;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1); overflow: hidden; cursor: pointer;
     }
-
-    .card img {
-      width: 100%;
-      height: 140px;
-      object-fit: cover;
-    }
-
-    .card h4 {
-      margin: 10px;
-    }
-
-    .success {
-      color: green;
-      margin-top: 10px;
-    }
-
+    .card img { width: 100%; height: 150px; object-fit: cover; }
+    .card h4 { margin: 10px; }
+    .success { color: green; margin-top: 10px; }
     .modal {
-      display: none;
-      position: fixed;
-      top: 0; left: 0;
-      width: 100%;
-      height: 100%;
-      background: rgba(0,0,0,0.7);
-      justify-content: center;
-      align-items: center;
+      display: none; position: fixed; top: 0; left: 0;
+      width: 100%; height: 100%; background: rgba(0,0,0,0.7);
+      justify-content: center; align-items: center; z-index: 1000;
     }
-
     .modal-content {
-      background: white;
-      padding: 20px;
-      border-radius: 8px;
-      max-width: 500px;
-      width: 90%;
-      position: relative;
+      background: white; padding: 20px; width: 90%;
+      max-width: 500px; border-radius: 10px; position: relative;
     }
-
     .carousel img {
-      width: 100%;
-      height: 200px;
-      object-fit: cover;
-      margin-bottom: 10px;
-      border-radius: 6px;
+      width: 100%; height: 220px; object-fit: cover;
+      border-radius: 6px; margin-bottom: 10px;
     }
-
     .close {
-      position: absolute;
-      right: 15px;
-      top: 10px;
-      font-size: 18px;
-      cursor: pointer;
+      position: absolute; top: 10px; right: 16px;
+      font-size: 20px; cursor: pointer;
+    }
+    footer {
+      background: #2c3e50; color: white;
+      text-align: center; padding: 12px; margin-top: 40px;
     }
   </style>
 </head>
 <body>
+
+  <header>🛍️ Item Manager Web App</header>
 
   <nav>
     <a onclick="showPage('view')">View Items</a>
     <a onclick="showPage('add')">Add Items</a>
   </nav>
 
-  <div class="container" id="addPage" style="display:none;">
+  <div class="container" id="addPage" style="display: none;">
     <h2>Add New Item</h2>
     <form id="itemForm">
       <input type="text" id="itemName" placeholder="Item Name" required />
@@ -131,8 +72,8 @@
         <option>Sports Gear</option>
       </select>
       <textarea id="itemDesc" placeholder="Item Description" required></textarea>
-      <input type="url" id="coverImage" placeholder="Cover Image URL" required />
-      <input type="url" id="additionalImages" placeholder="Additional Images (comma-separated)" />
+      <input type="text" id="coverImage" placeholder="Cover Image Path (e.g. image/myimg.jpg)" required />
+      <input type="text" id="additionalImages" placeholder="Additional Image Paths (comma-separated)" />
       <button type="submit">Add Item</button>
     </form>
     <p class="success" id="successMsg"></p>
@@ -154,6 +95,10 @@
     </div>
   </div>
 
+  <footer>
+    © 2025 Item Manager | Developed for Internship Assignment
+  </footer>
+
   <script>
     const form = document.getElementById("itemForm");
     const itemList = document.getElementById("itemList");
@@ -164,41 +109,45 @@
     const modalImages = document.getElementById("modalImages");
     const successMsg = document.getElementById("successMsg");
 
-    let items = JSON.parse(localStorage.getItem("items")) || [
+    let items = [
       {
-        name: "Formal Shirt",
+        name: "Cotton Shirt",
         type: "Shirt",
-        desc: "Premium white formal cotton shirt for office wear.",
-        cover: "https://images.unsplash.com/photo-1581578017425-becf2823d254?auto=format&fit=crop&w=600&q=80",
+        desc: "Formal cotton shirt for office wear.",
+        cover: "image/cotton-shirt-cover.jpg",
         images: [
-          "https://images.unsplash.com/photo-1562158070-622a4c1e74a0?auto=format&fit=crop&w=600&q=80"
+          "image/cotton-shirt-1.jpg",
+          "image/cotton-shirt-2.jpg"
         ]
       },
       {
-        name: "Denim Jeans",
+        name: "Blue Jeans",
         type: "Pant",
-        desc: "Stylish blue denim jeans with stretch fit.",
-        cover: "https://images.unsplash.com/photo-1598032893065-cd3842a9a1d1?auto=format&fit=crop&w=600&q=80",
+        desc: "Stretch-fit comfortable denim jeans.",
+        cover: "image/blue-jeans-cover.jpg",
         images: [
-          "https://images.unsplash.com/photo-1620252437848-2b9b6a2639c1?auto=format&fit=crop&w=600&q=80"
+          "image/blue-jeans-1.jpg",
+          "image/blue-jeans-2.jpg"
         ]
       },
       {
         name: "Running Shoes",
         type: "Shoes",
-        desc: "Lightweight breathable running shoes.",
-        cover: "https://images.unsplash.com/photo-1528701800489-20b6c108e937?auto=format&fit=crop&w=600&q=80",
+        desc: "Breathable lightweight running shoes.",
+        cover: "image/running-shoes-cover.jpg",
         images: [
-          "https://images.unsplash.com/photo-1612147598051-1d1be0e12cc0?auto=format&fit=crop&w=600&q=80"
+          "image/running-shoes-1.jpg",
+          "image/running-shoes-2.jpg"
         ]
       },
       {
-        name: "Tennis Racket",
+        name: "Cricket Bat",
         type: "Sports Gear",
-        desc: "Carbon fiber tennis racket with excellent grip.",
-        cover: "https://images.unsplash.com/photo-1583623025817-d180b6d60190?auto=format&fit=crop&w=600&q=80",
+        desc: "Professional grade cricket bat.",
+        cover: "image/cricket-bat-cover.jpg",
         images: [
-          "https://images.unsplash.com/photo-1568254183085-4c21f19c7e59?auto=format&fit=crop&w=600&q=80"
+          "image/cricket-bat-1.jpg",
+          "image/cricket-bat-2.jpg"
         ]
       }
     ];
@@ -219,7 +168,6 @@
         images: document.getElementById("additionalImages").value.split(",").map(i => i.trim()).filter(Boolean)
       };
       items.push(item);
-      localStorage.setItem("items", JSON.stringify(items));
       form.reset();
       successMsg.textContent = "Item successfully added";
       setTimeout(() => successMsg.textContent = "", 3000);
@@ -252,4 +200,4 @@
     showPage("view");
   </script>
 </body>
-</html>
+  </html>
